@@ -16,7 +16,7 @@ const TableList: React.FC<TableListProps> = ({ dbConfig }) => {
       const fetchTables = async () => {
         try {
           const response = await axios.post(
-            "http://localhost:5000/api/tables",
+            "http://localhost:8080/api/tables",
             dbConfig
           );
           setTables(response.data);
