@@ -4,13 +4,14 @@
 
 DBreeze is a web-based platform that redefines how companies manage and analyze 
 their data. It seamlessly combines two core capabilities: 
-Streamlined Database Management for Non-Technical Users 
+
+### Streamlined Database Management for Non-Technical Users 
 Thanks to its intuitive graphical interface, anyone within the organization can modify, 
 update, and maintain databases without writing a single line of code. This significantly 
 reduces the dependence on specialized staff and allows each team to interact with data 
 in an agile, independent way. 
 
-## Real-Time Data Visualization and Analysis
+### Real-Time Data Visualization and Analysis
 
 With powerful chart generation and customizable dashboards, users gain immediate 
 insights to make informed decisions. The platform translates raw data into clear visual 
