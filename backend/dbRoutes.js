@@ -44,8 +44,8 @@ router.post("/tables", async (req, res) => {
       tables = await db.raw("SHOW TABLES");
       tables = tables[0].map((table) => Object.values(table)[0]);
     } else if (client === 'sqlite3') {
-      tables = await db.raw("SELECT name FROM sqlite_master WHERE type='table'");
-      tables = tables[0].map((table) => table.name);
+      const result = await db.raw(".tables");
+      tables = result.map((row) => row.name);
     }
 
     res.json(tables);
