@@ -1,17 +1,16 @@
-import express from 'express'
-import cors from 'cors'
-import dotenv from 'dotenv'
-import dbRoutes from './dbRoutes.js'
+import express from 'express';
+import dotenv from 'dotenv'; // Importa dotenv
+import routes from './index.js';
 
-dotenv.config()
+dotenv.config(); // Carga las variables de entorno
 
-const app = express()
-const PORT = process.env.VITE_BACKEND_PORT || 8080
+const app = express();
+app.use(express.json());
 
-app.use(cors())
-app.use(express.json())
-app.use('/api', dbRoutes)
+// Importa todas las rutas automáticamente
+app.use('/api', routes);
 
+const PORT = process.env.VITE_BACKEND_PORT || 5000; // Usa la variable de entorno correcta
 app.listen(PORT, () => {
-	console.log(`Servidor corriendo en http://localhost:${PORT}`)
-})
+  console.log(`Servidor corriendo en http://localhost:${PORT}`);
+});
