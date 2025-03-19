@@ -5,14 +5,14 @@ const router = express.Router();
 
 // Obtener los datos de una tabla específica
 router.post("/:name", async (req, res) => {
-  const { client, host, user, password, database } = req.body;
+  const { client, host, user, password, database, token, port } = req.body;
   const { name } = req.params;
 
   if (!client || !database) {
     return res.status(400).json({ error: "Faltan datos de conexión" });
   }
 
-  const db = createDatabaseConnection({ client, host, user, password, database });
+  const db = createDatabaseConnection({ client, host, user, password, database, token, port });
 
   try {
     const data = await db.select("*").from(name);
