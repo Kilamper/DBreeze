@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import './index.css';
-import { auth, db } from '../firebase';
-import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import './loginStyles.css';
+import { signIn, signUp } from '../backend/login';
 
 const SignInForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -10,12 +8,7 @@ const SignInForm: React.FC = () => {
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert('Signed in successfully!');
-    } catch (error) {
-      alert('Error signing in: ' + error);
-    }
+    await signIn(email, password);
   };
 
   return (
@@ -23,8 +16,6 @@ const SignInForm: React.FC = () => {
       <h1>Sign In</h1>
       <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
-      <br />
-      <a className="forget" href="#">Forget your password?</a>
       <br />
       <button type="submit">Sign In</button>
     </form>
@@ -39,20 +30,7 @@ const SignUpForm: React.FC = () => {
 
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault();
-    try {
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      await setDoc(doc(db, 'users', user.uid), {
-        name,
-        email,
-        role,
-      });
-
-      alert('Account created successfully!');
-    } catch (error) {
-      alert('Error creating account: ' + error);
-    }
+    await signUp(name, email, password, role);
   };
 
   return (
