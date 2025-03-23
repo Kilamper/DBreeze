@@ -20,6 +20,7 @@ export const createDatabaseConnection = ({ client, host, user, password, databas
     config.connection = {
       filename: database,  // Ruta del archivo SQLite local
     };
+    config.useNullAsDefault = true;
   } else if (client === 'libsql') {
     config.client = Client_LibSQL
     config.connection = {
