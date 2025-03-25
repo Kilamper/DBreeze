@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './loginStyles.css';
-import { signIn, signUp } from '../backend/login';
+import { signIn, signUp } from '../backend/firebase/login';
 
 const SignInForm: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -13,7 +13,7 @@ const SignInForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSignIn}>
-      <h1>Sign In</h1>
+      <h1 className='login-h1'>Sign In</h1>
       <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
       <br />
@@ -35,7 +35,7 @@ const SignUpForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSignUp}>
-      <h1>Create Account</h1>
+      <h1 className='login-h1'>Create Account</h1>
       <input type="text" placeholder="Name" value={name} onChange={(e) => setName(e.target.value)} />
       <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} />
       <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} />
@@ -58,7 +58,8 @@ const LoginPage: React.FC = () => {
   const handleRegisterClick = () => setIsActive(false);
 
   return (
-    <div className={`container ${isActive ? 'active' : ''}`} id="container">
+    <div className='login-body'>
+      <div className={`container ${isActive ? 'active' : ''}`} id="container">
       <div className="signIn">
         <SignInForm />
       </div>
@@ -68,17 +69,18 @@ const LoginPage: React.FC = () => {
       <div className="overlap">
         <div className="toggle">
           <div className="overlap-right">
-            <h1>Hello, Friend!</h1>
+            <h1 className='login-h1'>Hello, Friend!</h1>
             <p>Register your personal details to use all of site features</p>
             <button id="login" onClick={handleLoginClick}>Sign Up</button>
           </div>
           <div className="overlap-left">
-            <h1>Welcome back!</h1>
+            <h1 className='login-h1'>Welcome back!</h1>
             <p>Enter your personal details to use all of site features</p>
             <button id="register" onClick={handleRegisterClick}>Sign In</button>
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };
