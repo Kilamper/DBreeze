@@ -9,8 +9,9 @@ import {
   TableHeaderCell,
   TableRoot,
   TableRow,
-} from "../components/Table";
+} from "./tremor/Table";
 import { DbConfig } from "../types/dbTypes";
+import { columns } from "./data-table/columns";
 
 interface ExampleTableProps {
   tableName: string;
@@ -24,7 +25,6 @@ export function ExampleTable({ tableName, dbConfig }: ExampleTableProps) {
   useEffect(() => {
     const fetchTableData = async () => {
       try {
-        console.log("Sending dbConfig:", dbConfig); // Agrega un log para verificar el contenido de dbConfig
         const response = await axios.post(API_URL, dbConfig); // Enviar solo dbConfig en el cuerpo
         setData(response.data);
       } catch (error) {
@@ -34,16 +34,19 @@ export function ExampleTable({ tableName, dbConfig }: ExampleTableProps) {
     fetchTableData();
   }, [tableName, API_URL, dbConfig]);
 
+  const tableColumns = columns(data);
+
   return (
     <TableRoot>
       <Table>
         <TableCaption>Data from {tableName}</TableCaption>
         <TableHead>
           <TableRow>
-            {data.length > 0 &&
-              Object.keys(data[0]).map((key) => (
-                <TableHeaderCell key={key}>{key}</TableHeaderCell>
-              ))}
+            {tableColumns.map((column) => (
+              <TableHeaderCell key={column.id}>
+                {column.meta?.displayName || column.id}
+              </TableHeaderCell>
+            ))}
           </TableRow>
         </TableHead>
         <TableBody>

@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { DbConfig } from "../types/dbTypes";
-import { ExampleTable } from "./ExampleTable"; // Importar el componente ExampleTable
+import { DataTable } from "./data-table/DataTable"; // Importar el componente DataTable
 
 interface TableListProps {
   dbConfig: DbConfig;
@@ -17,7 +17,6 @@ const TableList: React.FC<TableListProps> = ({ dbConfig }) => {
     if (dbConfig) {
       const fetchTables = async () => {
         try {
-          console.log("Sending dbConfig:", dbConfig); // Agrega un log para verificar el contenido de dbConfig
           const response = await axios.post(API_URL, dbConfig);
           setTables(response.data);
         } catch (error) {
@@ -38,7 +37,12 @@ const TableList: React.FC<TableListProps> = ({ dbConfig }) => {
           </li>
         ))}
       </ul>
-      {selectedTable && <ExampleTable tableName={selectedTable} dbConfig={dbConfig} />} {/* Renderizar ExampleTable */}
+      <h1 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50">
+        {selectedTable || "Select a table"} 
+      </h1>
+      <div className="mt-4 sm:mt-6 lg:mt-10">
+        <DataTable tableName={selectedTable!} dbConfig={dbConfig} />
+      </div>
     </div>
   );
 };
