@@ -2,15 +2,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { DbConfig } from "../types/dbTypes";
-import { DataTable } from "./data-table/DataTable"; // Importar el componente DataTable
 
 interface TableListProps {
   dbConfig: DbConfig;
+  onTableSelect: (table: string, dbConfig: DbConfig) => void; // New prop
 }
 
-const TableList: React.FC<TableListProps> = ({ dbConfig }) => {
+const TableList: React.FC<TableListProps> = ({ dbConfig, onTableSelect }) => {
   const [tables, setTables] = useState<string[]>([]);
-  const [selectedTable, setSelectedTable] = useState<string | null>(null); // Estado para la tabla seleccionada
   const API_URL = "http://localhost:8080/api/tables";
 
   useEffect(() => {
@@ -27,23 +26,23 @@ const TableList: React.FC<TableListProps> = ({ dbConfig }) => {
     }
   }, [API_URL, dbConfig]);
 
+  const handleTableClick = (table: string) => {
+    localStorage.setItem("table", JSON.stringify({ name: table, dbConfig }));
+    onTableSelect(table, dbConfig); // Notify parent
+  };
+
   return (
-    <div>
-      <h2>Tables</h2>
-      <ul>
-        {tables.map((table, index) => (
-          <li key={index} onClick={() => setSelectedTable(table)} style={{ cursor: "pointer" }}>
-            {table}
-          </li>
-        ))}
-      </ul>
-      <h1 className="text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-50">
-        {selectedTable || "Select a table"} 
-      </h1>
-      <div className="mt-4 sm:mt-6 lg:mt-10">
-        <DataTable tableName={selectedTable!} dbConfig={dbConfig} />
-      </div>
-    </div>
+    <ul>
+      {tables.map((table, index) => (
+        <li
+          key={index}
+          onClick={() => handleTableClick(table)}
+          style={{ cursor: "pointer" }}
+        >
+          {table}
+        </li>
+      ))}
+    </ul>
   );
 };
 
