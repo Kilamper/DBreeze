@@ -1,10 +1,14 @@
 // src/components/DatabaseForm.tsx
 import React, { useState } from "react";
 import { DbConfig } from "../types/dbTypes.ts";
+import { saveDatabaseConnection } from "../../backend/firebase/connections";
 
 interface DatabaseFormProps {
   onConnect: (config: DbConfig) => void;
 }
+
+const user = localStorage.getItem("user");
+const userId = JSON.parse(user!).uid;
 
 const DatabaseForm: React.FC<DatabaseFormProps> = ({ onConnect }) => {
   const [client, setClient] = useState<string>("");
@@ -18,6 +22,7 @@ const DatabaseForm: React.FC<DatabaseFormProps> = ({ onConnect }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const config: DbConfig = { client, host, user, password, database, token, port };
+    saveDatabaseConnection(userId, config.database, config); // Call saveDatabaseConnection
     onConnect(config);
   };
 
