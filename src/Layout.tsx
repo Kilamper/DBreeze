@@ -40,7 +40,7 @@ const Layout = () => {
   return (
     <div className="flex h-screen">
       {/* Barra lateral fija */}
-      <nav className="w-64 bg-black text-white p-5 border-r border-gray-800">
+      <nav className="w-64 bg-gray-900 text-white p-5 border-r border-gray-800">
         <div className="flex items-center gap-2 mb-6">
           <img src="/dbreeze.png" className="w-10"></img>
           <h2 className="text-2xl font-bold">DBreeze</h2>

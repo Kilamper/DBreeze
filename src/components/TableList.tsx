@@ -27,7 +27,6 @@ const TableList: React.FC<TableListProps> = ({ dbConfig, onTableSelect }) => {
   }, [API_URL, dbConfig]);
 
   const handleTableClick = (table: string) => {
-    localStorage.setItem("table", JSON.stringify({ name: table, dbConfig }));
     onTableSelect(table, dbConfig); // Notify parent
   };
 
