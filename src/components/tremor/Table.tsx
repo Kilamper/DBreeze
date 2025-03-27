@@ -2,7 +2,7 @@
 
 import React from "react"
 
-import { cx } from "../lib/utils"; // Adjusted to a relative path
+import { cx } from "../../lib/utils"; // Adjusted to a relative path
 
 const TableRoot = React.forwardRef<
   HTMLDivElement,

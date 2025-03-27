@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { DbConfig } from "../types/dbTypes";
-//import { Table } from "../types/dbTypes.ts";
 
 interface TableListProps {
   dbConfig: DbConfig;
+  onTableSelect: (table: string, dbConfig: DbConfig) => void; // New prop
 }
 
-const TableList: React.FC<TableListProps> = ({ dbConfig }) => {
+const TableList: React.FC<TableListProps> = ({ dbConfig, onTableSelect }) => {
   const [tables, setTables] = useState<string[]>([]);
   const API_URL = "http://localhost:8080/api/tables";
 
@@ -19,7 +19,6 @@ const TableList: React.FC<TableListProps> = ({ dbConfig }) => {
           const response = await axios.post(API_URL, dbConfig);
           setTables(response.data);
         } catch (error) {
-          console.log(dbConfig);
           console.error("Error fetching tables:", error);
         }
       };
@@ -27,15 +26,22 @@ const TableList: React.FC<TableListProps> = ({ dbConfig }) => {
     }
   }, [API_URL, dbConfig]);
 
+  const handleTableClick = (table: string) => {
+    onTableSelect(table, dbConfig); // Notify parent
+  };
+
   return (
-    <div>
-      <h2>Tables</h2>
-      <ul>
-        {tables.map((table, index) => (
-          <li key={index}>{table}</li>
-        ))}
-      </ul>
-    </div>
+    <ul>
+      {tables.map((table, index) => (
+        <li
+          key={index}
+          onClick={() => handleTableClick(table)}
+          style={{ cursor: "pointer" }}
+        >
+          {table}
+        </li>
+      ))}
+    </ul>
   );
 };
 

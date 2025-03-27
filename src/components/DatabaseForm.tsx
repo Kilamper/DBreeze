@@ -1,10 +1,14 @@
 // src/components/DatabaseForm.tsx
 import React, { useState } from "react";
 import { DbConfig } from "../types/dbTypes.ts";
+import { saveDatabaseConnection } from "../../backend/firebase/connections";
 
 interface DatabaseFormProps {
   onConnect: (config: DbConfig) => void;
 }
+
+const user = localStorage.getItem("user");
+const userId = JSON.parse(user!).uid;
 
 const DatabaseForm: React.FC<DatabaseFormProps> = ({ onConnect }) => {
   const [client, setClient] = useState<string>("");
@@ -18,54 +22,77 @@ const DatabaseForm: React.FC<DatabaseFormProps> = ({ onConnect }) => {
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const config: DbConfig = { client, host, user, password, database, token, port };
-    onConnect(config);  // Llamamos a la función onConnect que pasamos como prop
+    saveDatabaseConnection(userId, config.database, config); // Call saveDatabaseConnection
+    onConnect(config);
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <select value={client} onChange={(e) => setClient(e.target.value)}>
-        <option value="" disabled>Select Client</option>
-        <option value="mysql2">MySQL</option>
-        <option value="sqlite3">SQLite</option>
-        <option value="libsql">LibSQL</option>
+    <form
+      onSubmit={handleSubmit}
+      className="bg-gray-800 p-4 rounded-lg max-w-md mx-auto space-y-4"
+    >
+      <select
+        value={client}
+        onChange={(e) => setClient(e.target.value)}
+        className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white"
+      >
+        <option className="text-white" value="" disabled>Select Client</option>
+        <option className="text-white" value="mysql2">MySQL</option>
+        <option className="text-white" value="sqlite3">SQLite</option>
+        <option className="text-white" value="libsql">LibSQL</option>
       </select>
+      { client === "mysql2" && <div className="flex justify-between gap-2">
+        <input
+          type="text"
+          value={host}
+          onChange={(e) => setHost(e.target.value)}
+          placeholder="Host"
+          className="w-auto p-2 border border-gray-600 rounded bg-gray-700 text-white"
+        />
+        <input
+          type="text"
+          value={port}
+          onChange={(e) => setPort(e.target.value)}
+          placeholder="Port"
+          className="w-auto p-2 border border-gray-600 rounded bg-gray-700 text-white"
+        />
+      </div> }
+      { client === "mysql2" && <div className="flex justify-between gap-2">
+        <input
+          type="text"
+          value={user}
+          onChange={(e) => setUser(e.target.value)}
+          placeholder="User"
+          className="w-auto p-2 border border-gray-600 rounded bg-gray-700 text-white"
+        />
+        <input
+          type="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          className="w-auto p-2 border border-gray-600 rounded bg-gray-700 text-white"
+        />
+      </div>}
       <input
-      type="text"
-      value={host}
-      onChange={(e) => setHost(e.target.value)}
-      placeholder="Host"
+        type="text"
+        value={database}
+        onChange={(e) => setDatabase(e.target.value)}
+        placeholder={ "Database" + (client === "sqlite3" ? " file path" : client === "libsql" ? " url" : " name") }
+        className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white"
       />
-      <input
-      type="text"
-      value={user}
-      onChange={(e) => setUser(e.target.value)}
-      placeholder="User"
-      />
-      <input
-      type="password"
-      value={password}
-      onChange={(e) => setPassword(e.target.value)}
-      placeholder="Password"
-      />
-      <input
-      type="text"
-      value={database}
-      onChange={(e) => setDatabase(e.target.value)}
-      placeholder="Database"
-      />
-      <input
-      type="text"
-      value={token}
-      onChange={(e) => setToken(e.target.value)}
-      placeholder="Token"
-      />
-      <input
-      type="text"
-      value={port}
-      onChange={(e) => setPort(e.target.value)}
-      placeholder="Port"
-      />
-      <button type="submit">Connect</button>
+      { client === "libsql" && <input
+        type="password"
+        value={token}
+        onChange={(e) => setToken(e.target.value)}
+        placeholder="Token"
+        className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white"
+      /> }
+      <button
+        type="submit"
+        className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+      >
+        Connect
+      </button>
     </form>
   );
 };

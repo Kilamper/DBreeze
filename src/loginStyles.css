@@ -1,27 +1,19 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&display=swap');
 
-body{
+.login-body{
     background-color: #c9d6ff;
     background: linear-gradient(to right, #e2e2e2, #c9d6ff);
     display: flex;
+    height: 100vh;
     align-content: center;
     align-items: center;
     justify-content: center;
     font-family: 'Montserrat', sans-serif;
 }
 
-h1{
+.login-h1{
     font-size: 30px;
     font-weight: bold;
-}
-
-a{
-    text-decoration: none;
-}
-
-a:visited{
-    color: #000000;
-    text-decoration: none;
 }
 
 .container{
