@@ -20,11 +20,12 @@ const DatabaseForm: React.FC<DatabaseFormProps> = ({ onConnect }) => {
   const [database, setDatabase] = useState<string>("");
   const [token, setToken] = useState<string>("");
   const [port, setPort] = useState<string>("");
+  const [name, setName] = useState<string>("");
 
   const handleSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     const config: DbConfig = { client, host, user, password, database, token, port };
-    saveDatabaseConnection(userId, config.database, config); // Call saveDatabaseConnection
+    saveDatabaseConnection(userId, name, config); // Call saveDatabaseConnection
     onConnect(config);
   };
 
@@ -89,6 +90,13 @@ const DatabaseForm: React.FC<DatabaseFormProps> = ({ onConnect }) => {
         placeholder="Token"
         className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white"
       /> }
+      <input 
+          type="text"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          placeholder="Connection Name"
+          className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white"
+      />
       <button
         type="submit"
         className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
