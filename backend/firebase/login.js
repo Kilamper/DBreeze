@@ -1,14 +1,15 @@
 import { auth, db } from '../../firebase';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { doc, setDoc, getDoc } from 'firebase/firestore';
 
 export const signIn = async (email, password) => {
   try {
     const userCredential = await signInWithEmailAndPassword(auth, email, password);
     const user = userCredential.user;
 
-    // Save user information to localStorage
-    localStorage.setItem('user', JSON.stringify({ uid: user.uid, email: user.email }));
+    const userData = await getUserData(user.uid);
+
+    localStorage.setItem('user', JSON.stringify({ uid: user.uid, email: user.email, name: userData.name }));
     window.location.reload();
   } catch (error) {
     alert('Error signing in: ' + error);
@@ -26,6 +27,7 @@ export const signUp = async (name, email, password, role) => {
       role,
     });
 
+    localStorage.setItem('user', JSON.stringify({ uid: user.uid, email: user.email, name: name }));
     window.location.reload();
   } catch (error) {
     alert('Error creating account: ' + error);
@@ -39,5 +41,16 @@ export const signOut = () => {
     window.location.reload();
   } catch (error) {
     alert('Error signing out: ' + error);
+  }
+};
+
+const getUserData = async (uid) => {
+  try {
+    const userDocRef = doc(db, 'users', uid);
+    const userDoc = await getDoc(userDocRef);
+    return userDoc.data();
+  } catch (error) {
+    alert('Error fetching user name: ' + error);
+    return null;
   }
 };
