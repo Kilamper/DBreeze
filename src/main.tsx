@@ -5,7 +5,6 @@ import App from './App.tsx'
 import Login from './Login.tsx'
 
 const user = localStorage.getItem('user')
-console.log('user', user)
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>

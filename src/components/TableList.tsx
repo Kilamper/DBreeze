@@ -31,9 +31,10 @@ const TableList: React.FC<TableListProps> = ({ dbConfig, onTableSelect }) => {
   };
 
   return (
-    <ul>
+    <ul className="mt-1">
       {tables.map((table, index) => (
         <li
+          className="text-white px-2 pl-4 py-1 rounded mb-1 hover:bg-slate-700"
           key={index}
           onClick={() => handleTableClick(table)}
           style={{ cursor: "pointer" }}
