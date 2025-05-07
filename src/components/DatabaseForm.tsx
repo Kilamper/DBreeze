@@ -76,13 +76,23 @@ const DatabaseForm: React.FC<DatabaseFormProps> = ({ onConnect }) => {
           className="w-auto p-2 border border-gray-600 rounded bg-gray-700 text-white"
         />
       </div>}
-      <input
-        type="text"
-        value={database}
-        onChange={(e) => setDatabase(e.target.value)}
-        placeholder={ "Database" + (client === "sqlite3" ? " file path" : client === "libsql" ? " url" : " name") }
-        className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white"
-      />
+      { client === "sqlite3" ? (
+        <input
+          type="text"
+          value={database}
+          onChange={(e) => setDatabase(e.target.value.replace(/\\/g, "/"))}
+          placeholder="Database path"
+          className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white"
+        />
+      ) : (
+        <input
+          type="text"
+          value={database}
+          onChange={(e) => setDatabase(e.target.value)}
+          placeholder={client === "libsql" ? "Database url" : "Database name"}
+          className="w-full p-2 border border-gray-600 rounded bg-gray-700 text-white"
+        />
+      )}
       { client === "libsql" && <input
         type="password"
         value={token}

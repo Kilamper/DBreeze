@@ -19,8 +19,12 @@ for (const file of routeFiles) {
   const filePath = path.join(routesDir, file);
   const fileUrl = `file://${filePath.replace(/\\/g, '/')}`; // Convert to file:// URL
   import(fileUrl).then(module => {
-    const routeName = file.replace('.js', ''); // Eliminar la extensión ".js"
-    router.use(`/${routeName}`, module.default);
+    if (module.default) { // Ensure the module has a default export
+      const routeName = file.replace('.js', ''); // Eliminar la extensión ".js"
+      router.use(`/${routeName}`, module.default);
+    } else {
+      console.warn(`The file ${file} does not have a default export and was skipped.`);
+    }
   });
 }
 
