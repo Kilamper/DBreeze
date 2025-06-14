@@ -1,25 +1,23 @@
-// src/App.tsx
-import React, { useState } from "react";
-import DatabaseForm from "./components/DatabaseForm";
-import TableList from "./components/TableList";
-import { DbConfig } from "./types/dbTypes.ts";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Layout from "./Layout";
+import Home from "./pages/Home";
+import Content from "./pages/Content";
+import Overview from "./pages/Overview";
+import Settings from "./pages/Settings";
 
-const App: React.FC = () => {
-  const [dbConfig, setDbConfig] = useState<DbConfig | null>(null);
-
-  const handleConnect = (config: DbConfig) => {
-    setDbConfig(config);  // Actualiza la configuración de la base de datos
-  };
-
+const App = () => {
   return (
-    <div>
-      <h1>Database Connection</h1>
-      {!dbConfig ? (
-        <DatabaseForm onConnect={handleConnect} />
-      ) : (
-        <TableList dbConfig={dbConfig} />
-      )}
-    </div>
+    <Router>
+      <Routes>
+        {/* Rutas dentro del Layout */}
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="content" element={<Content />} />
+          <Route path="overview" element={<Overview />} />
+          <Route path="settings" element={<Settings />} />
+        </Route>
+      </Routes>
+    </Router>
   );
 };
 
